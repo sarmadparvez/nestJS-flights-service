@@ -19,7 +19,6 @@ import { of, throwError } from 'rxjs';
 import { AxiosResponse } from 'axios';
 import { FindAllFlightsDto } from './dto/find-all-flights.dto';
 import { ScheduleModule, SchedulerRegistry } from '@nestjs/schedule';
-import exp from 'constants';
 import { CronJob } from 'cron';
 
 describe('FlightsService', () => {
@@ -89,7 +88,7 @@ describe('FlightsService', () => {
         ],
         providers: [FlightsService],
       })
-        .useMocker((token) => createMock())
+        .useMocker(() => createMock())
         .compile();
 
       service = module.get<FlightsService>(FlightsService);
@@ -115,7 +114,7 @@ describe('FlightsService', () => {
         const getFromCache = jest.spyOn(cacheManager, 'get');
 
         // For each flight source return a mocked duplicate flights
-        sources.forEach((s) =>
+        sources.forEach(() =>
           getFromCache.mockImplementationOnce(() =>
             Promise.resolve(duolicateFlightsDataSet),
           ),
@@ -153,7 +152,7 @@ describe('FlightsService', () => {
         ],
         providers: [FlightsService],
       })
-        .useMocker((token) => createMock())
+        .useMocker(() => createMock())
         .compile();
 
       service = module.get<FlightsService>(FlightsService);
@@ -188,9 +187,6 @@ describe('FlightsService', () => {
     });
 
     it('flights in cache should be undefined when flights source endpoint is down', async () => {
-      const response: AxiosResponse<FindAllFlightsDto> = <AxiosResponse>{
-        data: duolicateFlightsDataSet,
-      };
       const httpGet = jest
         .spyOn(httpService, 'get')
         .mockImplementation(() => throwError(() => new Error()));
@@ -210,7 +206,7 @@ describe('FlightsService', () => {
         imports: [ScheduleModule.forRoot()],
         providers: [FlightsService],
       })
-        .useMocker((token) => createMock())
+        .useMocker(() => createMock())
         .compile();
 
       service = module.get<FlightsService>(FlightsService);

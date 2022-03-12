@@ -9,7 +9,9 @@ async function bootstrap() {
   // OpenAPI Specification
   const config = new DocumentBuilder()
     .setTitle('Flight Service')
-    .setDescription('The services shows flight schedule')
+    .setDescription(
+      'The services returns flight information which is fetched from different flight sources.',
+    )
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
@@ -17,14 +19,6 @@ async function bootstrap() {
 
   // save swagger spec file
   saveOpenAPISpec(document);
-
-  // add global validation
-  /*  app.useGlobalPipes(
-    new ValidationPipe({
-      transform: true,
-      forbidUnknownValues: true,
-    }),
-  );*/
   await app.listen(process.env.PORT || 3000);
 }
 
